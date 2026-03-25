@@ -1,0 +1,38 @@
+{% extends "patients/dashboard_base.html" %}
+{% block title %}Pending Attendances{% endblock %}
+{% block dashboard_content %}
+<div class="container">
+    <h2>Pending Attendance Approvals</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Date</th>
+                <th>Login Time</th>
+                <th>Location (lat, lng)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for att in attendances %}
+            <tr>
+                <td>{{ att.user.username }}</td>
+                <td>{{ att.date }}</td>
+                <td>{{ att.login_time|date:"H:i:s" }}</td>
+                <td>{{ att.location_lat|default:"-" }}, {{ att.location_lng|default:"-" }}</td>
+                <td>
+                    <form method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="attendance_id" value="{{ att.id }}">
+                        <button type="submit" name="action" value="approve" class="btn btn-success">Approve</button>
+                        <button type="submit" name="action" value="reject" class="btn btn-danger">Reject</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5">No pending attendances.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

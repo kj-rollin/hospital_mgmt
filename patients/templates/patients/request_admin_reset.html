@@ -1,0 +1,260 @@
+{% extends "patients/base.html" %}
+
+{% block title %}Request Password Reset{% endblock %}
+
+{% block content %}
+<style>
+    .reset-container {
+        max-width: 500px;
+        margin: 50px auto;
+    }
+    .reset-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+    .card-header {
+        background: linear-gradient(135deg, #00796b, #004d40);
+        padding: 1.5rem;
+        text-align: center;
+    }
+    .card-header h2 {
+        color: white;
+        margin: 0;
+    }
+    .card-body {
+        padding: 2rem;
+    }
+    .info-box {
+        background: #e0f2f1;
+        padding: 1rem;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+    .code-box {
+        background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+        border: 1px solid #ffb74d;
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        animation: fadeInUp 0.6s ease-out;
+    }
+    .code-box p {
+        margin: 0 0 0.5rem 0;
+        color: #e65100;
+    }
+    .code-display {
+        font-size: 2rem;
+        font-weight: bold;
+        letter-spacing: 4px;
+        background: white;
+        display: inline-block;
+        padding: 0.2rem 1rem;
+        border-radius: 8px;
+        margin: 0.5rem 0;
+        font-family: monospace;
+    }
+    .code-btn {
+        display: inline-block;
+        background: #ff9800;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        text-decoration: none;
+        margin-top: 0.5rem;
+        transition: background 0.3s;
+    }
+    .code-btn:hover {
+        background: #f57c00;
+        text-decoration: none;
+    }
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #00796b;
+    }
+    input {
+        width: 100%;
+        padding: 0.9rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        font-size: 1rem;
+    }
+    
+    .code-alert {
+    background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+    border-left: 5px solid #2e7d32;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+    animation: slideIn 0.3s ease-out;
+}
+.code-alert .alert-icon {
+    font-size: 2rem;
+}
+.code-alert .alert-content {
+    flex: 1;
+}
+.code-alert .alert-actions {
+    margin-top: 0.5rem;
+}
+.alert-btn {
+    background: #2e7d32;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: inline-block;
+}
+.alert-btn:hover {
+    background: #1b5e20;
+    text-decoration: none;
+    color: white;
+}
+.alert-close {
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #2e7d32;
+    padding: 0;
+}
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+    
+    input:focus {
+        outline: none;
+        border-color: #00796b;
+    }
+    button {
+        background: linear-gradient(135deg, #00796b, #004d40);
+        color: white;
+        border: none;
+        padding: 0.9rem;
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        width: 100%;
+    }
+    button:hover {
+        opacity: 0.9;
+    }
+    .links {
+        margin-top: 1rem;
+        text-align: center;
+    }
+    .links a {
+        color: #00796b;
+        text-decoration: none;
+    }
+    .links a:hover {
+        text-decoration: underline;
+    }
+    .messages {
+        list-style: none;
+        padding: 0;
+        margin-bottom: 1rem;
+    }
+    .messages li {
+        padding: 0.8rem;
+        border-radius: 12px;
+        margin-bottom: 0.5rem;
+    }
+    .messages .success {
+        background: #e8f5e9;
+        color: #2e7d32;
+        border-left: 4px solid #2e7d32;
+    }
+    .messages .warning {
+        background: #fff3e0;
+        color: #ef6c00;
+        border-left: 4px solid #ef6c00;
+    }
+    .messages .error {
+        background: #ffebee;
+        color: #c62828;
+        border-left: 4px solid #c62828;
+    }
+</style>
+
+<div class="reset-container">
+    <div class="reset-card">
+        <div class="card-header">
+            <h2>Request Admin-Assisted Password Reset</h2>
+        </div>
+        <div class="card-body">
+            <div class="info-box">
+                <strong>Why this method?</strong><br>
+                For security reasons, we do not provide automated password resets. An administrator will verify your identity and assist you. You will receive a response within 2 hours.
+            </div>
+
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li class="{{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            
+            {% if show_code %}
+    <div class="code-alert">
+        <div class="alert-icon">🔐</div>
+        <div class="alert-content">
+            <strong>Hi {{ user_username }},</strong> Your request has been approved!<br>
+            You can now use the manual code provided by the administrator to reset your password.
+            <div class="alert-actions">
+                <a href="{% url 'patients:reset_with_code' %}" class="alert-btn">Enter Manual Code →</a>
+            </div>
+        </div>
+        <button class="alert-close" onclick="this.parentElement.style.display='none';">✖</button>
+    </div>
+{% endif %}
+                                
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username">Your Username</label>
+                    <input type="text" name="username" id="username" placeholder="Enter your username" required>
+                </div>
+                <button type="submit">Submit Request</button>
+            </form>
+
+            <div class="links">
+                <a href="{% url 'patients:login' %}">Back to Login</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

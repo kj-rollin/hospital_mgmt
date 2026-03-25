@@ -1,0 +1,24 @@
+{% extends "patients/base.html" %}
+
+{% block title %}Reset with Code{% endblock %}
+
+{% block content %}
+<div style="max-width: 400px; margin: 50px auto;">
+    <div class="card">
+        <h2>Enter Reset Code</h2>
+        <p>Please enter the 6‑digit code provided by the administrator.</p>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="code">Reset Code</label>
+                <input type="text" name="code" id="code" class="form-control" required maxlength="6">
+            </div>
+            <button type="submit" class="btn">Verify Code</button>
+        </form>
+        <div class="links" style="margin-top: 20px;">
+            <a href="{% url 'patients:request_admin_reset' %}">Request a new reset</a> |
+            <a href="{% url 'patients:login' %}">Back to login</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

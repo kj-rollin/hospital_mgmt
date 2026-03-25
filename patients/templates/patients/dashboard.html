@@ -1,0 +1,72 @@
+{% extends "patients/dashboard_base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block dashboard_content %}
+
+<!-- Profile Summary Card -->
+<div class="profile-summary-card">
+    <div class="profile-summary-content">
+        <div class="profile-avatar">
+            {% if user.profile.profile_picture %}
+                <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture">
+            {% else %}
+                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Default Avatar">
+            {% endif %}
+        </div>
+        <div class="profile-info">
+            <h3>{{ user.get_full_name|default:user.username }}</h3>
+            <p>{{ user.email }}</p>
+            <a href="{% url 'patients:profile' %}" class="view-profile-link">View Full Profile →</a>
+        </div>
+    </div>
+</div>
+
+    <!-- Statistics -->
+    <div class="stats">
+        <div class="stat-card">
+            <span class="stat-number">142</span>
+            <span class="stat-label">Patients Today</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number">28</span>
+            <span class="stat-label">Doctors On Duty</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number">56</span>
+            <span class="stat-label">Appointments</span>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <!-- Quick Actions Card (Role‑based) -->
+        <div class="card">
+            <h3>Quick Actions</h3>
+            <div class="action-buttons">
+                {% if is_customer_service %}
+                    <a href="{% url 'patients:register_patient' %}" class="action-btn-link">➕ Register New Patient</a>
+                    <a href="#" class="action-btn-link">📋 View All Patients</a>
+                {% else %}
+                    <button class="action-btn">👨‍⚕️ View My Schedule</button>
+                    <a href="#" class="action-btn-link">📋 View All Patients</a>
+                    <button class="action-btn">📊 Generate Report</button>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Recent Activities Card (Role‑based) -->
+        <div class="card">
+            <h3>Recent Activities</h3>
+            <ul class="activity-list">
+                {% if is_customer_service %}
+                    <li>Patient registrations today: {{ registrations_today|default:"0" }}</li>
+                    <li>Last registered: {{ last_patient_name|default:"None" }}</li>
+                {% else %}
+                    <li>Dr. Smith admitted patient John Doe</li>
+                    <li>New appointment scheduled for 2:30 PM</li>
+                    <li>Patient discharge completed</li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

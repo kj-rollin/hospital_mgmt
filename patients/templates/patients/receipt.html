@@ -1,0 +1,103 @@
+{% extends "patients/base.html" %}
+
+{% block title %}Registration Receipt{% endblock %}
+
+{% block content %}
+<style>
+    .receipt {
+        max-width: 500px;
+        margin: 40px auto;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        overflow: hidden;
+        font-family: monospace;
+    }
+    .receipt-header {
+        background: #00796b;
+        color: white;
+        text-align: center;
+        padding: 1rem;
+    }
+    .receipt-body {
+        padding: 1.5rem;
+    }
+    .receipt-detail {
+        border-bottom: 1px dashed #ccc;
+        padding: 0.8rem 0;
+        display: flex;
+        justify-content: space-between;
+    }
+    .receipt-detail strong {
+        color: #00796b;
+    }
+    .footer {
+        text-align: center;
+        background: #f5f5f5;
+        padding: 1rem;
+        font-size: 0.8rem;
+    }
+    .print-btn {
+        background: #00796b;
+        color: white;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 1rem;
+    }
+    @media print {
+        .print-btn, .links {
+            display: none;
+        }
+        .receipt {
+            box-shadow: none;
+        }
+    }
+</style>
+
+<div class="receipt">
+    <div class="receipt-header">
+        <h2>PATIENT REGISTRATION RECEIPT</h2>
+        <p>Date: {% now "Y-m-d H:i" %}</p>
+    </div>
+    <div class="receipt-body">
+        <div class="receipt-detail">
+            <strong>Patient ID:</strong>
+            <span>{{ patient.patient_id }}</span>
+        </div>
+        <div class="receipt-detail">
+            <strong>Full Name:</strong>
+            <span>{{ patient.first_name }} {{ patient.middle_name }} {{ patient.last_name }}</span>
+        </div>
+        <div class="receipt-detail">
+            <strong>Date of Birth:</strong>
+            <span>{{ patient.date_of_birth }}</span>
+        </div>
+        <div class="receipt-detail">
+            <strong>Gender:</strong>
+            <span>{{ patient.get_gender_display }}</span>
+        </div>
+        <div class="receipt-detail">
+            <strong>Phone:</strong>
+            <span>{{ patient.phone }}</span>
+        </div>
+        <div class="receipt-detail">
+            <strong>Address:</strong>
+            <span>{{ patient.address }}</span>
+        </div>
+        <div class="receipt-detail">
+            <strong>Served by:</strong>
+            <span>{{ served_by.get_full_name|default:served_by.username }}</span>
+        </div>
+    </div>
+    <div class="footer">
+        <button onclick="window.print()" class="print-btn">Print Receipt</button>
+        <p>Thank you for using our hospital management system.</p>
+    </div>
+</div>
+<div class="links" style="text-align: center; margin: 20px;">
+    <a href="{% url 'patients:register_patient' %}">Register Another Patient</a> |
+    <a href="{% url 'patients:dashboard' %}">Back to Dashboard</a>
+</div>
+{% endblock %}

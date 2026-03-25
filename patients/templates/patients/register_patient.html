@@ -1,0 +1,74 @@
+{% extends "patients/base.html" %}
+
+{% block title %}Register New Patient{% endblock %}
+
+{% block content %}
+<style>
+    .form-container {
+        max-width: 600px;
+        margin: 40px auto;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        padding: 2rem;
+    }
+    .form-container h2 {
+        text-align: center;
+        color: #00796b;
+        margin-bottom: 1.5rem;
+    }
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    label {
+        display: block;
+        margin-bottom: 0.3rem;
+        font-weight: 600;
+        color: #00796b;
+    }
+    input, select, textarea {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid #b2dfdb;
+        border-radius: 8px;
+        font-size: 1rem;
+    }
+    button {
+        background: linear-gradient(135deg, #00796b, #004d40);
+        color: white;
+        border: none;
+        padding: 0.8rem;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        width: 100%;
+        cursor: pointer;
+        margin-top: 1rem;
+    }
+    .errorlist {
+        color: #d32f2f;
+        list-style: none;
+        padding: 0;
+        margin: 0 0 0.5rem 0;
+    }
+</style>
+
+<div class="form-container">
+    <h2>Register New Patient</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {{ field.errors }}
+            </div>
+        {% endfor %}
+        <button type="submit">Register Patient</button>
+    </form>
+    <div class="links" style="text-align: center; margin-top: 1rem;">
+        <a href="{% url 'patients:dashboard' %}">Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}
