@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 import uuid
+import secrets
 import random
 import string
 from datetime import timedelta, datetime
@@ -37,7 +38,7 @@ class Patient(models.Model):
         # Format: PATIENT/YYMMDDHHMMSS/RANDOM/HSP
         now = datetime.now()
         timestamp = now.strftime('%y%m%d%H%M%S')
-        rand = random.randint(100, 999)
+        rand = secrets.randbelow(900) + 100
         return f"PATIENT/{timestamp}/{rand}/HSP"
 
     def __str__(self):
@@ -111,3 +112,4 @@ class Attendance(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.date} - {'Approved' if self.is_approved else 'Pending'}"
+        
